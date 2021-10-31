@@ -1,0 +1,51 @@
+import React from 'react';
+import Web3 from 'web3';
+import Comfortable from './artifacts/Comfortable.json';
+
+//  import Comfortable from "artifacts"
+// import { Web3 } from '../node_modules/web3/dist/web3.min.js';
+const App = () => {
+  
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+  const contractAddress='0x89C73313B645b9C1fcC4D87A6F6EdBFAA1E4Cd81';
+  var sender = web3.eth.accounts[0];
+  const abi=Comfortable.abi;
+       
+  const contract=new web3.eth.Contract(abi,contractAddress);
+  contract.methods.name().call((err,result)=>{console.log(result)});
+  contract.methods.view1().call((err,result)=>{console.log(result)});
+  contract.methods.balance().call((err,result)=>{console.log(result)});
+  contract.methods.send('0xCDd47E737ED2E2B05e80137F4553E4a6F449BC32').call((err,result)=>{console.log(result)});
+  contract.methods.sevent().call((err,result)=>{console.log(result)});
+
+//  const connect=async()=>{
+//    await window.ethereum.enable();
+//   }
+  async function getAccount() {
+    await window.ethereum.enable();
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const account = accounts[0];
+    console.log(account)
+     window.ethereum.on('accountsChanged', function (accounts) {
+        // Time to reload your interface with accounts[0]!
+        console.log(account)
+        return account;
+        
+       });
+}
+getAccount();
+const chainid=async ()=>{
+  const chainId = await web3.eth.getChainId();
+        console.log(chainId);
+}
+ chainid();
+      return (
+     <>
+     {/* <h1>{Balance}</h1> */}
+       <button  >connect web3</button>
+     </>
+   )
+ }
+ 
+ export default App;
+ 

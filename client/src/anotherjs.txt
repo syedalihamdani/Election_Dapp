@@ -1,0 +1,47 @@
+import React, { useState } from 'react';
+import getWeb3 from './getWeb3';
+import Comfortable from './artifacts/Comfortable.json';
+
+const App = () => {
+  const [web3,setweb3]=useState();
+  const [accounts,setaccounts]=useState();
+  const [contract,setcontract]=useState();
+ const connect = async () => {
+      // Get network provider and web3 instance.
+      const Web3 = await getWeb3();
+      setweb3(Web3);
+      // Use web3 to get the user's accounts.
+      const accounts = await Web3.eth.getAccounts();
+      console.log(accounts[0]);
+      setaccounts(accounts);
+      
+       // Get the contract instance.
+       const networkId = await Web3.eth.net.getId();
+       console.log(networkId);
+       const deployedNetwork = Comfortable.networks[networkId];
+       console.log(deployedNetwork);
+       const instance = new Web3.eth.Contract(
+         Comfortable.abi,
+         deployedNetwork && deployedNetwork.address);
+         setcontract(instance);
+ }
+connect();
+const name= async()=>{
+  await contract.methods.name().call((err,result)=>{console.log(result)});
+ await contract.methods.view1().call((err,result)=>{console.log(result)});
+ await contract.methods.balance().call((err,result)=>{console.log(result)});
+ await contract.methods.sevent().call((err,result)=>{console.log(result)});
+}
+const fundtransfer=async()=>{
+  await contract.methods.selfpay({value:100000});
+}
+
+  return (
+    <>
+      <button onClick={()=>name()}>connect to MetaMask</button>
+      <button onClick={()=>fundtransfer()}>transfer</button>
+    </>
+  )
+}
+
+export default App;
