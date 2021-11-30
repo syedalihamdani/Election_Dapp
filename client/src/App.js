@@ -9,15 +9,12 @@ const App = () => {
   const [contract,setcontract]=useState();
   const [networkName,setnetworkName]=useState("Wallet not");
   const [Balance,setBalance]=useState();
-  const [Candidateid,setCandidateid]=useState();
   const [Candidateid2,setCandidateid2]=useState();
   const [Voteraddress,setVoteraddress]=useState('hh');
   const [Votecount,setVotecount]=useState();
   const [Votecount2,setVotecount2]=useState();
-  const [View,setView]=useState();
   const [Isvoted,setIsvoted]=useState();
   const [Count,setCount]=useState();
-  const [Event,setEvent]=useState();
  const connect = async () => {
       const Web3 = await getWeb3();
       setweb3(Web3);
@@ -62,7 +59,7 @@ const candidateId=(event)=>{
 }
 const votefor= async()=>{
   if(networkName!=="Ropsten"){
-    alert("Connect to Ropsten network otherwise it won't work")
+    alert("Connect to wallet and Connect to Ropsten network otherwise it won't work")
   }else{
     await contract.methods.vote(Candidateid2).send({from:account});
     // await contract.getPastEvents('electionupdate',{fromBlock:0},(err,result)=>(alert(` Vote nomber ${result.length} is casted `)));
@@ -71,18 +68,15 @@ const votefor= async()=>{
 }
 const candidatesCount=async()=>{
   if(networkName!=="Ropsten"){
-    alert("Connect to Ropsten network otherwise it won't work")
+    alert("Connect to wallet and Connect to Ropsten network otherwise it won't work")
   }else{
   await contract.methods.candidatesCount().call((err,result)=>{setCount(result)});
   }
 
 }
-const candidatesno=(event)=>{
-  setCandidateid(event.target.value);
-}
 const candidatesdata=async ()=>{
   if(networkName!=="Ropsten"){
-    alert("Connect to Ropsten network otherwise it won't work")
+    alert("Connect to wallet and Connect to Ropsten network otherwise it won't work")
   }else{
   await contract.methods.candidates(1).call((err,result)=>{setVotecount(result.votecount)});
   await contract.methods.candidates(2).call((err,result)=>{setVotecount2(result.votecount)});
@@ -94,7 +88,7 @@ const voteraddress=(event)=>{
 }
 const isvoted=async ()=>{
   if(networkName!=="Ropsten"){
-    alert("Connect to Ropsten network otherwise it won't work")
+    alert("Connect to wallet and connect to Ropsten network otherwise it won't work")
   }else if(Voteraddress.length!==42){
     alert("Enter the correct ropsten account address to see the balance.copy the address from your wallet")
   }else{
@@ -148,7 +142,7 @@ const restart=()=>{
       <button className="btn2" onClick={()=>isvoted()}>Is voted?</button>
   </div>
   <div className="section">
-  <input className="input" placeholder="Id of Candidate" type="number" min="1" max="2" onChange={candidateId}></input>
+  <input className="input" placeholder="Id of Candidate" type="number" min="1" max="2" maxLength="1" onChange={candidateId}></input>
       <button className="btn2" onClick={()=>votefor()}>Vote</button>
   </div>
   </div>
